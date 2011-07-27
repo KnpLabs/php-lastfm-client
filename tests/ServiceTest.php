@@ -101,6 +101,21 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         $r->invokeArgs($service, array('theMethod', array('http_method' => Transport::HTTP_METHOD_POST)));
 
         $this->assertEquals('TheClientReturnValue', $service->theMethod(array('foo' => 'bar')));
+
+
+        $message = '->__call() raises an exception when an undefined method is called';
+        try {
+            $service->badMethod(array('foo' => 'bar'));
+            $exception = false;
+        } catch (\Exception $e) {
+            $exception = true;
+        }
+
+        if (true === $exception) {
+            $this->anything($message);
+        } else {
+            $this->fail($message);
+        }
     }
 
     public function getClientMock()

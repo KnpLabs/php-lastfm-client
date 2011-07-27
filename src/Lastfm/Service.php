@@ -25,13 +25,15 @@ abstract class Service
 
     public function __call($method, $arguments)
     {
-        if ($this->hasMethod($method)) {
-            $options    = $this->getMethodOptions($method);
-            $apiMethod  = sprintf('%s.%s', $this->getName(), $method);
-            $parameters = isset($arguments[0]) ? $arguments[0] : array();
-
-            return $this->client->request($options['http_method'], $apiMethod, $parameters);
+        if (!$this->hasMethod($method)) {
+            throw new \Exception(sprintf('Call no undefined method %s::%s.', get_class($this), $method));
         }
+
+        $options    = $this->getMethodOptions($method);
+        $apiMethod  = sprintf('%s.%s', $this->getName(), $method);
+        $parameters = isset($arguments[0]) ? $arguments[0] : array();
+
+        return $this->client->request($options['http_method'], $apiMethod, $parameters);
     }
 
     /**
