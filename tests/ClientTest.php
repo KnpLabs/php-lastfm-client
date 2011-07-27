@@ -100,9 +100,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('THE_REQUEST_RETURN_VALUE', $client->post('Foo.bar', array('foo' => 'bar')));
     }
 
-    public function testGetTrackApi()
+    public function testGetTrackService()
     {
         $client = new Client();
-        $this->assertInstanceOf('Lastfm\Api\Track', $client->getTrackApi());
+        $this->assertInstanceOf('Lastfm\Service\Track', $client->getTrackService());
     }
 }

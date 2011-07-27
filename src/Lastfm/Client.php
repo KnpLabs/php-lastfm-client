@@ -10,7 +10,7 @@ class Client
     private $apiKey;
     private $transport;
 
-    private $trackApi;
+    private $trackService;
 
     /**
      * Constructor
@@ -140,16 +140,16 @@ class Client
     }
 
     /**
-     * Returns a Track API instance
+     * Returns a Track service instance
      *
-     * @return \Lastfm\Api\Track
+     * @return \Lastfm\Service\Track
      */
-    public function getTrackApi()
+    public function getTrackService()
     {
-        if (null === $this->trackApi) {
-            $this->trackApi = new Api\Track($this);
+        if (null === $this->trackService) {
+            $this->trackService = new Service\Track($this);
         }
 
-        return $this->trackApi;
+        return $this->trackService;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Lastfm\Api;
+namespace Lastfm\Service;
 
 use Lastfm\Client;
 

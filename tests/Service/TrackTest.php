@@ -1,6 +1,6 @@
 <?php
 
-namespace Lastfm\Api;
+namespace Lastfm\Service;
 
 class TrackTest extends \PHPUnit_Framework_TestCase
 {
