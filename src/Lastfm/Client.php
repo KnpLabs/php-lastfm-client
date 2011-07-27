@@ -10,6 +10,8 @@ class Client
     private $apiKey;
     private $transport;
 
+    private $trackApi;
+
     /**
      * Constructor
      *
@@ -135,5 +137,19 @@ class Client
         }
 
         return $result;
+    }
+
+    /**
+     * Returns a Track API instance
+     *
+     * @return \Lastfm\Api\Track
+     */
+    public function getTrackApi()
+    {
+        if (null === $this->trackApi) {
+            $this->trackApi = new Api\Track($this);
+        }
+
+        return $this->trackApi;
     }
 }
