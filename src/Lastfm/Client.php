@@ -2,6 +2,12 @@
 
 namespace Lastfm;
 
+/**
+ * The Last.fm client
+ *
+ * @package Last.fm
+ * @author  Antoine Hérault <antoine.herault@gmail.com>
+ */
 class Client
 {
     const STATUS_SUCCESS = 'ok';
