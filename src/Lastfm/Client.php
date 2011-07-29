@@ -15,6 +15,7 @@ class Client
 
     private $apiKey;
     private $secret;
+    private $session;
     private $transport;
 
     private $trackService;
@@ -24,12 +25,14 @@ class Client
      *
      * @param  string    $apiKey    Your API key
      * @param  string    $secret    Your secret
+     * @param  Session   $session   A Session instance
      * @param  Transport $transport A Transport instance
      */
-    public function __construct($apiKey = null, $secret = null, Transport $transport = null)
+    public function __construct($apiKey = null, $secret = null, Session $session = null, Transport $transport = null)
     {
         $this->setApiKey($apiKey);
         $this->setSecret($secret);
+        $this->setSession($session);
 
         if (null === $transport) {
             $transport = new Transport\Curl();
@@ -76,6 +79,26 @@ class Client
     public function getSecret()
     {
         return $this->secret;
+    }
+
+    /**
+     * Defines the session
+     *
+     * @param  Session $session
+     */
+    public function setSession(Session $session = null)
+    {
+        $this->session = $session;
+    }
+
+    /**
+     * Returns the session
+     *
+     * @return Session
+     */
+    public function getSession()
+    {
+        return $this->session;
     }
 
     /**
