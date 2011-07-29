@@ -14,6 +14,7 @@ class Client
     const STATUS_ERROR   = 'error';
 
     private $apiKey;
+    private $secret;
     private $transport;
 
     private $trackService;
@@ -21,11 +22,14 @@ class Client
     /**
      * Constructor
      *
-     * @param  Transport $transport
+     * @param  string    $apiKey    Your API key
+     * @param  string    $secret    Your secret
+     * @param  Transport $transport A Transport instance
      */
-    public function __construct($apiKey = null, Transport $transport = null)
+    public function __construct($apiKey = null, $secret = null, Transport $transport = null)
     {
         $this->setApiKey($apiKey);
+        $this->setSecret($secret);
 
         if (null === $transport) {
             $transport = new Transport\Curl();
@@ -52,6 +56,26 @@ class Client
     public function getApiKey()
     {
         return $this->apiKey;
+    }
+
+    /**
+     * Defines the secret
+     *
+     * @param  string $secret
+     */
+    public function setSecret($secret)
+    {
+        $this->secret = $secret;
+    }
+
+    /**
+     * Return the secret
+     *
+     * @return string
+     */
+    public function getSecret()
+    {
+        return $this->secret;
     }
 
     /**

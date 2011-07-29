@@ -10,11 +10,13 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $client = new Client();
         $this->assertNull($client->getApiKey());
+        $this->assertNull($client->getSecret());
         $this->assertInstanceOf('Lastfm\Transport', $client->getTransport());
 
         $transport = $this->getMock('Lastfm\Transport');
-        $client = new Client('theApiKey', $transport);
+        $client = new Client('theApiKey', 'theSecret', $transport);
         $this->assertEquals('theApiKey', $client->getApiKey());
+        $this->assertEquals('theSecret', $client->getSecret());
         $this->assertEquals($transport, $client->getTransport());
     }
 
@@ -33,6 +35,13 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('theApiKey', $client->getApiKey());
     }
 
+    public function testSetSecret()
+    {
+        $client = new Client();
+        $client->setSecret('theSecret');
+        $this->assertEquals('theSecret', $client->getSecret());
+    }
+
     public function testRequest()
     {
         $transport = $this->getMock('Lastfm\Transport', array('request'));
@@ -42,7 +51,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo(Transport::HTTP_METHOD_GET), $this->equalTo('Foo.bar'), $this->equalTo(array('foo' => 'bar')))
             ->will($this->returnValue('the_response'))
         ;
-        $client = new Client(null, $transport);
+        $client = new Client(null, null, $transport);
         $this->assertEquals('the_response', $client->request(Transport::HTTP_METHOD_GET, 'Foo.bar', array('foo' => 'bar'), true));
 
         $transport = $this->getMock('Lastfm\Transport', array('request'));
@@ -52,7 +61,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo(Transport::HTTP_METHOD_GET), $this->equalTo('foo.bar'), $this->equalTo(array('api_key' => 'theApiKey', 'foo' => 'bar')))
             ->will($this->returnValue('the_response'))
         ;
-        $client = new Client('theApiKey', $transport);
+        $client = new Client('theApiKey', 'theSecret', $transport);
         $this->assertEquals('the_response', $client->request(Transport::HTTP_METHOD_GET, 'foo.bar', array('foo' => 'bar'), true));
 
         $transport = $this->getMock('Lastfm\Transport', array('request'));
@@ -62,7 +71,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo(Transport::HTTP_METHOD_GET), $this->equalTo('foo.bar'), $this->equalTo(array('api_key' => 'theApiKey', 'foo' => 'bar')))
             ->will($this->returnValue('the_response'))
         ;
-        $client = new Client('theApiKey', $transport);
+        $client = new Client('theApiKey', 'theSecret', $transport);
         $this->assertequals('the_response', $client->request(Transport::HTTP_METHOD_GET, 'foo.bar', array('foo' => 'bar'), true));
     }
 
