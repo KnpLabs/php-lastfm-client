@@ -2,30 +2,69 @@
 
 namespace Lastfm\Service;
 
-use Lastfm\Client;
+use Lastfm\Service;
+use Lastfm\Transport;
 
 /**
- * Track API class
+ * Track service class
  *
  * @package Lastfm
  * @author  Antoine Hérault <antoine.herault@gmail.com>
  */
-class Track
+class Track extends Service
 {
-    private $client;
-
     /**
-     * Constructor
-     *
-     * @param  Client $client
+     * {@inheritDoc}
      */
-    public function __construct(Client $client)
+    protected function configure()
     {
-        $this->client = $client;
-    }
-
-    public function getInfo(array $parameters = array())
-    {
-        return $this->client->get('Track.getInfo', $parameters);
+        $this->addMethod('addTags', array(
+            'http_method'               => Transport::HTTP_METHOD_POST,
+            'requires_authentication'   => true
+        ));
+        $this->addMethod('ban', array(
+            'http_method'               => Transport::HTTP_METHOD_POST,
+            'requires_authentication'   => true
+        ));
+        $this->addMethod('getBuylinks');
+        $this->addMethod('getCorrection');
+        $this->addMethod('getFingerprintMetadata');
+        $this->addMethod('getInfo');
+        $this->addMethod('getShouts');
+        $this->addMethod('getSimilar');
+        $this->addMethod('getTags', array(
+            'requires_authentication'   => true
+        ));
+        $this->addMethod('getTopFans');
+        $this->addMethod('getTopTags');
+        $this->addMethod('love', array(
+            'http_method'               => Transport::HTTP_METHOD_POST,
+            'requires_authentication'   => true
+        ));
+        $this->addMethod('removeTag', array(
+            'http_method'               => Transport::HTTP_METHOD_POST,
+            'requires_authentication'   => true
+        ));
+        $this->addMethod('scrobble', array(
+            'http_method'               => Transport::HTTP_METHOD_POST,
+            'requires_authentication'   => true
+        ));
+        $this->addMethod('search');
+        $this->addMethod('share', array(
+            'http_method'               => Transport::HTTP_METHOD_POST,
+            'requires_authentication'   => true
+        ));
+        $this->addMethod('unban', array(
+            'http_method'               => Transport::HTTP_METHOD_POST,
+            'requires_authentication'   => true
+        ));
+        $this->addMethod('unlove', array(
+            'http_method'               => Transport::HTTP_METHOD_POST,
+            'requires_authentication'   => true
+        ));
+        $this->addMethod('updateNowPlaying', array(
+            'http_method'               => Transport::HTTP_METHOD_POST,
+            'requires_authentication'   => true
+        ));
     }
 }

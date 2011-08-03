@@ -2,6 +2,8 @@
 
 namespace Lastfm\Service;
 
+use Lastfm\Transport;
+
 class TrackTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstruct()
@@ -12,11 +14,15 @@ class TrackTest extends \PHPUnit_Framework_TestCase
 
     public function testGetInfo()
     {
-        $client = $this->getMock('Lastfm\Client');
+        $client = $this->getMock('Lastfm\Client', array('request'));
         $client
             ->expects($this->once())
-            ->method('get')
-            ->with($this->equalTo('Track.getInfo'), $this->equalTo(array('mbid' => 'foobar')))
+            ->method('request')
+            ->with(
+                $this->equalTo(Transport::HTTP_METHOD_GET),
+                $this->equalTo('Track.getInfo'),
+                $this->equalTo(array('mbid' => 'foobar'))
+            )
             ->will($this->returnValue('TheClientReturnValue'))
         ;
         $track = new Track($client);

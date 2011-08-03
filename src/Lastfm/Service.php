@@ -21,6 +21,8 @@ abstract class Service
     public function __construct(Client $client)
     {
         $this->client = $client;
+
+        $this->configure();
     }
 
     public function __call($method, $arguments)
