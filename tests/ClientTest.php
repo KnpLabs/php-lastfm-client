@@ -127,4 +127,10 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client = new Client();
         $this->assertInstanceOf('Lastfm\Service\Track', $client->getTrackService());
     }
+
+    public function testGetAlbumService()
+    {
+        $client = new Client();
+        $this->assertInstanceOf('Lastfm\Service\Album', $client->getAlbumService());
+    }
 }

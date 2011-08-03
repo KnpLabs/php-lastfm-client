@@ -18,7 +18,7 @@ class Client
     private $session;
     private $transport;
 
-    private $trackService;
+    private $services;
 
     /**
      * Constructor
@@ -199,10 +199,24 @@ class Client
      */
     public function getTrackService()
     {
-        if (null === $this->trackService) {
-            $this->trackService = new Service\Track($this);
+        if (!isset($this->services['track'])) {
+            $this->services['track'] = new Service\Track($this);
         }
 
-        return $this->trackService;
+        return $this->services['track'];
+    }
+
+    /**
+     * Returns an Album service instance
+     *
+     * @return \Lastfm\Service\Album
+     */
+    public function getAlbumService()
+    {
+        if (!isset($this->services['album'])) {
+            $this->services['album'] = new Service\Album($this);
+        }
+
+        return $this->services['album'];
     }
 }
