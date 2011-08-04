@@ -173,10 +173,10 @@ class Client
             return $rawResult;
         }
 
-        $result = json_decode($rawResult, false);
+        $result = json_decode($rawResult, true);
 
         if (!is_array($result)) {
-            throw new \RuntimeException('Unable to deserialize API response.');
+            throw new Exception\InvalidResponse('Unable to deserialize API response.');
         }
 
         if (isset($result['error'])) {
@@ -186,10 +186,14 @@ class Client
                 $message = sprintf('Api error (%d) with no message.', $result['error']);
             }
 
-            throw new \RuntimeException($message);
+            throw new Exception\ErrorResponse($message, $result['error']);
         }
 
-        return $result;
+        if (1 === count($result)) {
+            $result = reset($result);
+        }
+
+        return 1 === count($result) ? reset($result) : $result;
     }
 
     /**
