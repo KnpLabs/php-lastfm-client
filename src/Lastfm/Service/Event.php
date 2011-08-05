@@ -6,35 +6,30 @@ use Lastfm\Service;
 use Lastfm\Transport;
 
 /**
- * Album service class
+ * Event service class
  *
  * @package Last.fm
  * @author  Antoine Hérault <antoine.herault@gmail.com>
  */
-class Album extends Service
+class Event extends Service
 {
     /**
      * {@inheritDoc}
      */
     protected function configure()
     {
-        $this->addMethod('addTags', array(
+        $this->addMethod('attend', array(
             'http_method'               => Transport::HTTP_METHOD_POST,
             'requires_authentication'   => true
         ));
-        $this->addMethod('getBuyLinks');
+        $this->addMethod('getAttendees');
         $this->addMethod('getInfo');
         $this->addMethod('getShouts');
-        $this->addMethod('getTags', array(
-            'requires_authentication'   => true
-        ));
-        $this->addMethod('getTopTags');
-        $this->addMethod('removeTag', array(
+        $this->addMethod('share', array(
             'http_method'               => Transport::HTTP_METHOD_POST,
             'requires_authentication'   => true
         ));
-        $this->addMethod('search');
-        $this->addMethod('share', array(
+        $this->addMethod('shout', array(
             'http_method'               => Transport::HTTP_METHOD_POST,
             'requires_authentication'   => true
         ));
