@@ -122,15 +122,37 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('THE_REQUEST_RETURN_VALUE', $client->post('Foo.bar', array('foo' => 'bar')));
     }
 
-    public function testGetTrackService()
+    /**
+     * @dataProvider dataForGetService
+     */
+    public function testGetService($name, $className)
     {
         $client = new Client();
-        $this->assertInstanceOf('Lastfm\Service\Track', $client->getTrackService());
+        $method = sprintf('get%sService', ucfirst($name));
+
+        $r = new \ReflectionMethod($client, $method);
+
+        $this->assertInstanceOf($className, $r->invoke($client));
     }
 
-    public function testGetAlbumService()
+    public function dataForGetService()
     {
-        $client = new Client();
-        $this->assertInstanceOf('Lastfm\Service\Album', $client->getAlbumService());
+        return array(
+            array('album', 'Lastfm\Service\Album'),
+            array('artist', 'Lastfm\Service\Artist'),
+            array('auth', 'Lastfm\Service\Auth'),
+            array('chart', 'Lastfm\Service\Chart'),
+            array('event', 'Lastfm\Service\Event'),
+            array('geo', 'Lastfm\Service\Geo'),
+            array('group', 'Lastfm\Service\Group'),
+            array('library', 'Lastfm\Service\Library'),
+            array('playlist', 'Lastfm\Service\Playlist'),
+            array('radio', 'Lastfm\Service\Radio'),
+            array('tag', 'Lastfm\Service\Tag'),
+            array('tasteometer', 'Lastfm\Service\Tasteometer'),
+            array('track', 'Lastfm\Service\Track'),
+            array('user', 'Lastfm\Service\User'),
+            array('venue', 'Lastfm\Service\Venue')
+        );
     }
 }

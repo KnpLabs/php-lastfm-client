@@ -197,30 +197,191 @@ class Client
     }
 
     /**
-     * Returns a Track service instance
-     *
-     * @return \Lastfm\Service\Track
-     */
-    public function getTrackService()
-    {
-        if (!isset($this->services['track'])) {
-            $this->services['track'] = new Service\Track($this);
-        }
-
-        return $this->services['track'];
-    }
-
-    /**
-     * Returns an Album service instance
+     * Returns an album service instance
      *
      * @return \Lastfm\Service\Album
      */
     public function getAlbumService()
     {
-        if (!isset($this->services['album'])) {
-            $this->services['album'] = new Service\Album($this);
+        return $this->getService('album');
+    }
+
+    /**
+     * Returns an artist service instance
+     *
+     * @return \Lastfm\Service\Artist
+     */
+    public function getArtistService()
+    {
+        return $this->getService('artist');
+    }
+
+    /**
+     * Returns an auth service instance
+     *
+     * @return \Lastfm\Service\Auth
+     */
+    public function getAuthService()
+    {
+        return $this->getService('auth');
+    }
+
+    /**
+     * Returns a chart service instance
+     *
+     * @return \Lastfm\Service\Chart
+     */
+    public function getChartService()
+    {
+        return $this->getService('chart');
+    }
+
+    /**
+     * Returns an event service instance
+     *
+     * @return \Lastfm\Service\Event
+     */
+    public function getEventService()
+    {
+        return $this->getService('event');
+    }
+
+    /**
+     * Returns a geo service instance
+     *
+     * @return \Lastfm\Service\Geo
+     */
+    public function getGeoService()
+    {
+        return $this->getService('geo');
+    }
+
+    /**
+     * Returns a group service instance
+     *
+     * @return \Lastfm\Service\Group
+     */
+    public function getGroupService()
+    {
+        return $this->getService('group');
+    }
+
+    /**
+     * Returns a library service instance
+     *
+     * @return \Lastfm\Service\Library
+     */
+    public function getLibraryService()
+    {
+        return $this->getService('library');
+    }
+
+    /**
+     * Returns a playlist service instance
+     *
+     * @return \Lastfm\Service\Playlist
+     */
+    public function getPlaylistService()
+    {
+        return $this->getService('playlist');
+    }
+
+    /**
+     * Returns a radio service instance
+     *
+     * @return \Lastfm\Service\Radio
+     */
+    public function getRadioService()
+    {
+        return $this->getService('radio');
+    }
+
+    /**
+     * Returns a tag service instance
+     *
+     * @return \Lastfm\Service\Tag
+     */
+    public function getTagService()
+    {
+        return $this->getService('tag');
+    }
+
+    /**
+     * Returns a tasteometer service instance
+     *
+     * @return \Lastfm\Service\Tasteometer
+     */
+    public function getTasteometerService()
+    {
+        return $this->getService('tasteometer');
+    }
+
+    /**
+     * Returns a track service instance
+     *
+     * @return \Lastfm\Service\Track
+     */
+    public function getTrackService()
+    {
+        return $this->getService('track');
+    }
+
+    /**
+     * Returns a user service instance
+     *
+     * @return \Lastfm\Service\User
+     */
+    public function getUserService()
+    {
+        return $this->getService('user');
+    }
+
+    /**
+     * Returns a venue service instance
+     *
+     * @return \Lastfm\Service\Venue
+     */
+    public function getVenueService()
+    {
+        return $this->getService('venue');
+    }
+
+    /**
+     * Returns an instance of the specified service
+     *
+     * @param  string $name
+     *
+     * @return \Lastfm\Service
+     */
+    protected function getService($name)
+    {
+        if (!isset($this->services[$name])) {
+            $this->services[$name] = $this->createService($name);
         }
 
-        return $this->services['album'];
+        return $this->services[$name];
+    }
+
+    /**
+     * Creates an instance of the specified service
+     *
+     * @param  string $name
+     *
+     * @return \Lastfm\Service
+     */
+    protected function createService($name)
+    {
+        $className = sprintf('Lastfm\Service\%s', ucfirst($name));
+
+        if (!class_exists($className)) {
+            throw new \RuntimeException(sprintf(
+                'Cannot create service \'%s\', class %s not found.',
+                $name, $className
+            ));
+        }
+
+        $r = new \ReflectionClass($className);
+
+        return $r->newInstanceArgs(array($this));
     }
 }
