@@ -18,10 +18,7 @@ class Artist extends Service
      */
     protected function configure()
     {
-        $this->addMethod('addTags', array(
-            'http_method'               => Transport::HTTP_METHOD_POST,
-            'requires_authentication'   => true
-        ));
+        $this->addMethod('addTags', true, Transport::HTTP_METHOD_POST);
         $this->addMethod('getCorrection');
         $this->addMethod('getEvents');
         $this->addMethod('getImages');
@@ -30,25 +27,14 @@ class Artist extends Service
         $this->addMethod('getPodcast');
         $this->addMethod('getShouts');
         $this->addMethod('getSimilar');
-        $this->addMethod('getTags', array(
-            'requires_authentication'   => true
-        ));
+        $this->addMethod('getTags', true);
         $this->addMethod('getTopAlbums');
         $this->addMethod('getTopFans');
         $this->addMethod('getTopTags');
         $this->addMethod('getTopTracks');
-        $this->addMethod('removeTag', array(
-            'http_method'               => Transport::HTTP_METHOD_POST,
-            'requires_authentication'   => true
-        ));
+        $this->addMethod('removeTag', true, Transport::HTTP_METHOD_POST);
         $this->addMethod('search');
-        $this->addMethod('share', array(
-            'http_method'               => Transport::HTTP_METHOD_POST,
-            'requires_authentication'   => true
-        ));
-        $this->addMethod('shout', array(
-            'http_method'               => Transport::HTTP_METHOD_POST,
-            'requires_authentication'   => true
-        ));
+        $this->addMethod('share', true, Transport::HTTP_METHOD_POST);
+        $this->addMethod('shout', true, Transport::HTTP_METHOD_POST);
     }
 }

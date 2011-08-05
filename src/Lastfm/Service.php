@@ -48,16 +48,15 @@ abstract class Service
     /**
      * Adds a method to the service
      *
-     * @param  string $name
-     * @param  array  $options
+     * @param  string  $name
+     * @param  boolean $requiresAuthentication
+     * @param  string  $httpMethod
      */
-    protected function addMethod($name, array $options = array())
+    protected function addMethod($name, $requiresAuthentication = false, $httpMethod = Transport::HTTP_METHOD_GET)
     {
-        $this->methods[$name] = array_merge(
-            array(
-                'http_method'   => Transport::HTTP_METHOD_GET
-            ),
-            $options
+        $this->methods[$name] = array(
+            'requires_authentication'   => $requiresAuthentication,
+            'http_method'               => $httpMethod
         );
     }
 
@@ -74,7 +73,7 @@ abstract class Service
     }
 
     /**
-     * Returns the specified method
+     * Returns the specified method's options
      *
      * @param  string $name
      *

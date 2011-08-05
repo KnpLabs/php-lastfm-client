@@ -18,53 +18,24 @@ class Track extends Service
      */
     protected function configure()
     {
-        $this->addMethod('addTags', array(
-            'http_method'               => Transport::HTTP_METHOD_POST,
-            'requires_authentication'   => true
-        ));
-        $this->addMethod('ban', array(
-            'http_method'               => Transport::HTTP_METHOD_POST,
-            'requires_authentication'   => true
-        ));
+        $this->addMethod('addTags', true, Transport::HTTP_METHOD_POST);
+        $this->addMethod('ban', true, Transport::HTTP_METHOD_POST);
         $this->addMethod('getBuylinks');
         $this->addMethod('getCorrection');
         $this->addMethod('getFingerprintMetadata');
         $this->addMethod('getInfo');
         $this->addMethod('getShouts');
         $this->addMethod('getSimilar');
-        $this->addMethod('getTags', array(
-            'requires_authentication'   => true
-        ));
+        $this->addMethod('getTags', true);
         $this->addMethod('getTopFans');
         $this->addMethod('getTopTags');
-        $this->addMethod('love', array(
-            'http_method'               => Transport::HTTP_METHOD_POST,
-            'requires_authentication'   => true
-        ));
-        $this->addMethod('removeTag', array(
-            'http_method'               => Transport::HTTP_METHOD_POST,
-            'requires_authentication'   => true
-        ));
-        $this->addMethod('scrobble', array(
-            'http_method'               => Transport::HTTP_METHOD_POST,
-            'requires_authentication'   => true
-        ));
+        $this->addMethod('love', true, Transport::HTTP_METHOD_POST);
+        $this->addMethod('removeTag', true, Transport::HTTP_METHOD_POST);
+        $this->addMethod('scrobble', true, Transport::HTTP_METHOD_POST);
         $this->addMethod('search');
-        $this->addMethod('share', array(
-            'http_method'               => Transport::HTTP_METHOD_POST,
-            'requires_authentication'   => true
-        ));
-        $this->addMethod('unban', array(
-            'http_method'               => Transport::HTTP_METHOD_POST,
-            'requires_authentication'   => true
-        ));
-        $this->addMethod('unlove', array(
-            'http_method'               => Transport::HTTP_METHOD_POST,
-            'requires_authentication'   => true
-        ));
-        $this->addMethod('updateNowPlaying', array(
-            'http_method'               => Transport::HTTP_METHOD_POST,
-            'requires_authentication'   => true
-        ));
+        $this->addMethod('share', true, Transport::HTTP_METHOD_POST);
+        $this->addMethod('unban', true, Transport::HTTP_METHOD_POST);
+        $this->addMethod('unlove', true, Transport::HTTP_METHOD_POST);
+        $this->addMethod('updateNowPlaying', true, Transport::HTTP_METHOD_POST);
     }
 }

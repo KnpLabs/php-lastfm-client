@@ -29,16 +29,10 @@ class User extends Service
         $this->addMethod('getPastEvents');
         $this->addMethod('getPersonalTags');
         $this->addMethod('getPlaylists');
-        $this->addMethod('getRecentStations', array(
-            'requires_authentication'   => true
-        ));
+        $this->addMethod('getRecentStations', true);
         $this->addMethod('getRecentTracks');
-        $this->addMethod('getRecommendedArtists', array(
-            'requires_authentication'   => true
-        ));
-        $this->addMethod('getRecommendedEvents', array(
-            'requires_authentication'   => true
-        ));
+        $this->addMethod('getRecommendedArtists', true);
+        $this->addMethod('getRecommendedEvents', true);
         $this->addMethod('getShouts');
         $this->addMethod('getTopAlbums');
         $this->addMethod('getTopArtists');
@@ -48,9 +42,6 @@ class User extends Service
         $this->addMethod('getWeeklyArtistChart');
         $this->addMethod('getWeeklyChartList');
         $this->addMethod('getWeeklyTrackChart');
-        $this->addMethod('shout', array(
-            'http_method'               => Transport::HTTP_METHOD_POST,
-            'requires_authentication'   => true
-        ));
+        $this->addMethod('shout', true, Transport::HTTP_METHOD_POST);
     }
 }

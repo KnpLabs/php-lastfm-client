@@ -12,7 +12,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         $r->setAccessible(true);
 
         $r->invokeArgs($service, array('foo'));
-        $r->invokeArgs($service, array('bar', array('http_method' => Transport::HTTP_METHOD_POST)));
+        $r->invokeArgs($service, array('bar', true, Transport::HTTP_METHOD_POST));
 
         $r = new \ReflectionMethod($service, 'getMethods');
         $r->setAccessible(true);
@@ -20,10 +20,12 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 'foo'   => array(
-                    'http_method'   => Transport::HTTP_METHOD_GET
+                    'requires_authentication'   => false,
+                    'http_method'               => Transport::HTTP_METHOD_GET
                 ),
                 'bar'   => array(
-                    'http_method'   => Transport::HTTP_METHOD_POST
+                    'requires_authentication'   => true,
+                    'http_method'               => Transport::HTTP_METHOD_POST
                 )
             ),
             $r->invoke($service)
@@ -59,21 +61,23 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
         $r->setAccessible(true);
 
         $r->invokeArgs($service, array('foo'));
-        $r->invokeArgs($service, array('bar', array('http_method' => Transport::HTTP_METHOD_POST)));
+        $r->invokeArgs($service, array('bar', true, Transport::HTTP_METHOD_POST));
 
         $getMethodOptions = new \ReflectionMethod($service, 'getMethodOptions');
         $getMethodOptions->setAccessible(true);
 
         $this->assertEquals(
             array(
-                'http_method'   => Transport::HTTP_METHOD_GET
+                'requires_authentication'   => false,
+                'http_method'               => Transport::HTTP_METHOD_GET
             ),
             $getMethodOptions->invokeArgs($service, array('foo'))
         );
 
         $this->assertEquals(
             array(
-                'http_method'   => Transport::HTTP_METHOD_POST
+                'requires_authentication'   => true,
+                'http_method'               => Transport::HTTP_METHOD_POST
             ),
             $getMethodOptions->invokeArgs($service, array('bar'))
         );
@@ -98,7 +102,7 @@ class ServiceTest extends \PHPUnit_Framework_TestCase
 
         $r = new \ReflectionMethod($service, 'addMethod');
         $r->setAccessible(true);
-        $r->invokeArgs($service, array('theMethod', array('http_method' => Transport::HTTP_METHOD_POST)));
+        $r->invokeArgs($service, array('theMethod', false, Transport::HTTP_METHOD_POST));
 
         $this->assertEquals('TheClientReturnValue', $service->theMethod(array('foo' => 'bar')));
 

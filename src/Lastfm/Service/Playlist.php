@@ -18,14 +18,8 @@ class Playlist extends Service
      */
     protected function configure()
     {
-        $this->addMethod('addTrack', array(
-            'http_method'               => Transport::HTTP_METHOD_POST,
-            'requires_authentication'   => true
-        ));
-        $this->addMethod('create', array(
-            'http_method'               => Transport::HTTP_METHOD_POST,
-            'requires_authentication'   => true
-        ));
+        $this->addMethod('addTrack', true, Transport::HTTP_METHOD_POST);
+        $this->addMethod('create', true, Transport::HTTP_METHOD_POST);
         $this->addMethod('fetch');
     }
 }

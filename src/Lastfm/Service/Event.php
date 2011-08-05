@@ -18,20 +18,11 @@ class Event extends Service
      */
     protected function configure()
     {
-        $this->addMethod('attend', array(
-            'http_method'               => Transport::HTTP_METHOD_POST,
-            'requires_authentication'   => true
-        ));
+        $this->addMethod('attend', true, Transport::HTTP_METHOD_POST);
         $this->addMethod('getAttendees');
         $this->addMethod('getInfo');
         $this->addMethod('getShouts');
-        $this->addMethod('share', array(
-            'http_method'               => Transport::HTTP_METHOD_POST,
-            'requires_authentication'   => true
-        ));
-        $this->addMethod('shout', array(
-            'http_method'               => Transport::HTTP_METHOD_POST,
-            'requires_authentication'   => true
-        ));
+        $this->addMethod('share', true, Transport::HTTP_METHOD_POST);
+        $this->addMethod('shout', true, Transport::HTTP_METHOD_POST);
     }
 }
