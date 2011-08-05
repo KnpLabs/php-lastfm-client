@@ -124,40 +124,48 @@ class Client
     /**
      * Shortcut method to perform a GET request
      *
-     * @param  string $apiMethod
-     * @param  array  $parameters
+     * @param  string  $apiMethod
+     * @param  array   $parameters
+     * @param  boolean $addSignature
+     * @param  boolean $addSession
+     * @param  boolean $raw
      *
-     * @return array
+     * @return mixed
      */
-    public function get($apiMethod, array $parameters = array())
+    public function get($apiMethod, array $parameters = array(), $addSignature = false, $addSession = false, $raw = false)
     {
-        return $this->request(Transport::HTTP_METHOD_GET, $apiMethod, $parameters);
+        return $this->request(Transport::HTTP_METHOD_GET, $apiMethod, $parameters, $addSignature, $addSession, $raw);
     }
 
     /**
      * Shortcut method to perform a POST request
      *
-     * @param  string $apiMethod
-     * @param  array  $parameters
+     * @param  string  $apiMethod
+     * @param  array   $parameters
+     * @param  boolean $addSignature
+     * @param  boolean $addSession
+     * @param  boolean $raw
      *
-     * @return array
+     * @return mixed
      */
-    public function post($apiMethod, array $parameters = array())
+    public function post($apiMethod, array $parameters = array(), $addSignature = false, $addSession = false, $raw = false)
     {
-        return $this->request(Transport::HTTP_METHOD_POST, $apiMethod, $parameters);
+        return $this->request(Transport::HTTP_METHOD_POST, $apiMethod, $parameters, $addSignature, $addSession, $raw);
     }
 
     /**
      * Performs an API request and returns the result
      *
-     * @param  string  $httpMethod The HTTP method (one of the Transport::HTTP_METHOD_* constants)
-     * @param  string  $apiMethod  The API method
-     * @param  array   $parameters An array of parameters
-     * @param  boolean $raw        Whether to return the raw result
+     * @param  string  $httpMethod   The HTTP method (one of the Transport::HTTP_METHOD_* constants)
+     * @param  string  $apiMethod    The API method
+     * @param  array   $parameters   An array of parameters
+     * @param  boolean $addSignature Whether to add a method signature to the request
+     * @param  boolean $addSession   Whether to add the session to the request
+     * @param  boolean $raw          Whether to return the raw result
      *
      * @return mixed
      */
-    public function request($httpMethod, $apiMethod, array $parameters = array(), $raw = false)
+    public function request($httpMethod, $apiMethod, array $parameters = array(), $addSignature = false, $addSession = false, $raw = false)
     {
         if (null !== $this->apiKey) {
             $parameters['api_key'] = $this->apiKey;
@@ -165,6 +173,17 @@ class Client
 
         if (!$raw) {
             $parameters['format'] = 'json';
+        }
+
+        if ($addSession) {
+            if (null === $this->session) {
+                throw new \LogicException('You must define the session prior to add it to a request.');
+            }
+            $parameters['sk'] = $this->session->getKey();
+        }
+
+        if ($addSignature) {
+            $parameters['api_sig'] = $this->createMethodSignature(array_merge($parameters, array('method' => $apiMethod)));
         }
 
         $rawResult = $this->transport->request($httpMethod, $apiMethod, $parameters);

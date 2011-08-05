@@ -65,7 +65,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('the_response'))
         ;
         $client = new Client(null, null, null, $transport);
-        $this->assertEquals('the_response', $client->request(Transport::HTTP_METHOD_GET, 'Foo.bar', array('foo' => 'bar'), true));
+        $this->assertEquals('the_response', $client->request(Transport::HTTP_METHOD_GET, 'Foo.bar', array('foo' => 'bar'), false, false, true));
 
         $transport = $this->getMock('Lastfm\Transport', array('request'));
         $transport
@@ -75,7 +75,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('the_response'))
         ;
         $client = new Client('theApiKey', 'theSecret', null, $transport);
-        $this->assertEquals('the_response', $client->request(Transport::HTTP_METHOD_GET, 'foo.bar', array('foo' => 'bar'), true));
+        $this->assertEquals('the_response', $client->request(Transport::HTTP_METHOD_GET, 'foo.bar', array('foo' => 'bar'), false, false, true));
 
         $transport = $this->getMock('Lastfm\Transport', array('request'));
         $transport
@@ -85,7 +85,46 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('the_response'))
         ;
         $client = new Client('theApiKey', 'theSecret', null, $transport);
-        $this->assertequals('the_response', $client->request(Transport::HTTP_METHOD_GET, 'foo.bar', array('foo' => 'bar'), true));
+        $this->assertequals('the_response', $client->request(Transport::HTTP_METHOD_GET, 'foo.bar', array('foo' => 'bar'), false, false, true));
+
+        $transport = $this->getMock('Lastfm\Transport', array('request'));
+        $transport
+            ->expects($this->once())
+            ->method('request')
+            ->with(
+                $this->equalTo(Transport::HTTP_METHOD_GET),
+                $this->equalTo('foo.bar'),
+                $this->equalTo(array('api_key' => 'theApiKey', 'foo' => 'bar', 'api_sig' => md5('api_keytheApiKeyfoobarmethodfoo.bartheSecret')))
+            )
+            ->will($this->returnValue('the_response'))
+        ;
+        $client = new Client('theApiKey', 'theSecret', null, $transport);
+        $this->assertequals('the_response', $client->request(Transport::HTTP_METHOD_GET, 'foo.bar', array('foo' => 'bar'), true, false, true));
+
+        $transport = $this->getMock('Lastfm\Transport', array('request'));
+        $transport
+            ->expects($this->once())
+            ->method('request')
+            ->with(
+                $this->equalTo(Transport::HTTP_METHOD_GET),
+                $this->equalTo('foo.bar'),
+                $this->equalTo(array('api_key' => 'theApiKey', 'foo' => 'bar', 'sk' => 'theSessionKey'))
+            )
+            ->will($this->returnValue('the_response'))
+        ;
+        $session = new Session('John', 'theSessionKey');
+        $client = new Client('theApiKey', 'theSecret', $session, $transport);
+        $this->assertequals('the_response', $client->request(Transport::HTTP_METHOD_GET, 'foo.bar', array('foo' => 'bar'), false, true, true));
+    }
+
+    /**
+     * @expectedException LogicException
+     */
+    public function testRequestAddSessionWhenTheClientHasNoConfiguredSession()
+    {
+        $transport = $this->getMock('Lastfm\Transport');
+        $client = new Client('theApiKey', 'theSecret', null, $transport);
+        $client->request(Transport::HTTP_METHOD_GET, 'foo.bar', array('foo' => 'bar'), false, true);
     }
 
     public function testGet()
@@ -97,12 +136,32 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->with(
                 $this->equalTo(Transport::HTTP_METHOD_GET),
                 $this->equalTo('Foo.bar'),
-                $this->equalTo(array('foo' => 'bar'))
+                $this->equalTo(array('foo' => 'bar')),
+                $this->equalTo(false),
+                $this->equalTo(false),
+                $this->equalTo(false)
             )
             ->will($this->returnValue('THE_REQUEST_RETURN_VALUE'))
         ;
 
         $this->assertEquals('THE_REQUEST_RETURN_VALUE', $client->get('Foo.bar', array('foo' => 'bar')));
+
+        $client = $this->getMock('Lastfm\Client', array('request'));
+        $client
+            ->expects($this->once())
+            ->method('request')
+            ->with(
+                $this->equalTo(Transport::HTTP_METHOD_GET),
+                $this->equalTo('Foo.bar'),
+                $this->equalTo(array('foo' => 'bar')),
+                $this->equalTo(true),
+                $this->equalTo(true),
+                $this->equalTo(true)
+            )
+            ->will($this->returnValue('THE_REQUEST_RETURN_VALUE'))
+        ;
+
+        $this->assertEquals('THE_REQUEST_RETURN_VALUE', $client->get('Foo.bar', array('foo' => 'bar'), true, true, true));
     }
 
     public function testPost()
@@ -114,12 +173,32 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->with(
                 $this->equalTo(Transport::HTTP_METHOD_POST),
                 $this->equalTo('Foo.bar'),
-                $this->equalTo(array('foo' => 'bar'))
+                $this->equalTo(array('foo' => 'bar')),
+                $this->equalTo(false),
+                $this->equalTo(false),
+                $this->equalTo(false)
             )
             ->will($this->returnValue('THE_REQUEST_RETURN_VALUE'))
         ;
 
         $this->assertEquals('THE_REQUEST_RETURN_VALUE', $client->post('Foo.bar', array('foo' => 'bar')));
+
+        $client = $this->getMock('Lastfm\Client', array('request'));
+        $client
+            ->expects($this->once())
+            ->method('request')
+            ->with(
+                $this->equalTo(Transport::HTTP_METHOD_POST),
+                $this->equalTo('Foo.bar'),
+                $this->equalTo(array('foo' => 'bar')),
+                $this->equalTo(true),
+                $this->equalTo(true),
+                $this->equalTo(true)
+            )
+            ->will($this->returnValue('THE_REQUEST_RETURN_VALUE'))
+        ;
+
+        $this->assertEquals('THE_REQUEST_RETURN_VALUE', $client->post('Foo.bar', array('foo' => 'bar'), true, true, true));
     }
 
     /**
