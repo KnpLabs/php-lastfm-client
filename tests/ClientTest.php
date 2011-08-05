@@ -155,4 +155,51 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             array('venue', 'Lastfm\Service\Venue')
         );
     }
+
+    /**
+     * @dataProvider dataForCreateMethodSignature
+     */
+    public function testCreateMethodSignature($secret, $parameters, $expectedSignature)
+    {
+        $client = new Client('theApiKey', $secret);
+
+        $r = new \ReflectionMethod($client, 'createMethodSignature');
+        $r->setAccessible(true);
+
+        $this->assertEquals($expectedSignature, $r->invokeArgs($client, array($parameters)));
+    }
+
+    public function dataForCreateMethodSignature()
+    {
+        return array(
+            array(
+                'theSecret',
+                array(),
+                md5('theSecret')
+            ),
+            array(
+                'theSecret',
+                array('foo' => 'bar'),
+                md5('foobartheSecret')
+            ),
+            array(
+                'theSecret',
+                array('foo' => 'bar', 'baz' => 'bat'),
+                md5('bazbatfoobartheSecret')
+            ),
+        );
+    }
+
+    /**
+     * @expectedException LogicException
+     */
+    public function testCreateMethodSignatureWhenTheClientHasNoConfiguredSecret()
+    {
+        $client = new Client('theApiKey');
+
+        $r = new \ReflectionMethod($client, 'createMethodSignature');
+        $r->setAccessible(true);
+
+        $r->invokeArgs($client, array(array('foo' => 'bar')));
+    }
 }

@@ -384,4 +384,27 @@ class Client
 
         return $r->newInstanceArgs(array($this));
     }
+
+    /**
+     * Creates the method signature for the given paramters
+     *
+     * @param  array $parameters
+     *
+     * @return string
+     */
+    protected function createMethodSignature(array $parameters)
+    {
+        if (null === $this->secret) {
+            throw new \LogicException('You must configure the API secret prior to generate a method signature.');
+        }
+
+        ksort($parameters);
+
+        $parametersString = '';
+        foreach ($parameters as $name => $value) {
+            $parametersString.= $name.$value;
+        }
+
+        return md5($parametersString.$this->secret);
+    }
 }
