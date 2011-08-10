@@ -212,6 +212,11 @@ class Client
             $result = reset($result);
         }
 
+        // sometimes, when a collection is empty, you get a string
+        if (is_string($result)) {
+            $result = array();
+        }
+
         return 1 === count($result) ? reset($result) : $result;
     }
 
