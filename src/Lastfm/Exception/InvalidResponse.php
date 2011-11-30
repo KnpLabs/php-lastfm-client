@@ -13,4 +13,33 @@ use Lastfm\Exception;
  */
 class InvalidResponse extends Exception
 {
+    private $response;
+
+    /**
+     * Constructor
+     *
+     * @param  string     $response The API response that caused the exception
+     * @param  integer    $code
+     * @param  \Exception $previous
+     */
+    public function __construct($response, $code = 0, \Exception $previous)
+    {
+        $this->response = $response;
+
+        parent::__construct(
+            sprintf('The API returned an invalid response: %s', $response),
+            $code,
+            $previous
+        );
+    }
+
+    /**
+     * Returns the response that caused the exception
+     *
+     * @return string
+     */
+    public function getResponse()
+    {
+        return $this->response;
+    }
 }

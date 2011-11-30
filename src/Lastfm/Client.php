@@ -195,7 +195,7 @@ class Client
         $result = json_decode($rawResult, true);
 
         if (!is_array($result)) {
-            throw new Exception\InvalidResponse('Unable to deserialize API response.');
+            throw new Exception\InvalidResponse($rawResult);
         }
 
         if (isset($result['error'])) {
