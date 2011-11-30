@@ -22,7 +22,7 @@ class InvalidResponse extends Exception
      * @param  integer    $code
      * @param  \Exception $previous
      */
-    public function __construct($response, $code = 0, \Exception $previous)
+    public function __construct($response, $code = 0, \Exception $previous = null)
     {
         $this->response = $response;
 
