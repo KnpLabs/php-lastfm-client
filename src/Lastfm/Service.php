@@ -101,7 +101,7 @@ abstract class Service
      */
     protected function getName()
     {
-        preg_match('/\\\\(\w+?)$/', get_class($this), $matches);
+        preg_match('/\\\\(\w+?)$/', strtolower(get_class($this)), $matches);
 
         if (empty($matches)) {
             throw new \RuntimeException(sprintf(
