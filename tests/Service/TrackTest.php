@@ -20,7 +20,7 @@ class TrackTest extends \PHPUnit_Framework_TestCase
             ->method('request')
             ->with(
                 $this->equalTo(Transport::HTTP_METHOD_GET),
-                $this->equalTo('Track.getInfo'),
+                $this->equalTo('track.getInfo'),
                 $this->equalTo(array('mbid' => 'foobar'))
             )
             ->will($this->returnValue('TheClientReturnValue'))
