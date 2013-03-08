@@ -28,7 +28,7 @@ abstract class Service
     public function __call($method, $arguments)
     {
         if (!$this->hasMethod($method)) {
-            throw new \Exception(sprintf('Call no undefined method %s::%s.', get_class($this), $method));
+            throw new \Exception(sprintf('Call to undefined method %s::%s.', get_class($this), $method));
         }
 
         $options    = $this->getMethodOptions($method);
