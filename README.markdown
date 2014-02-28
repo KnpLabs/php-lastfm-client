@@ -1,3 +1,8 @@
+## Not actively maintained
+
+This project is not actively maintained by KnpLabs. Please contact us if you would like to take over.
+
+
 PHP Last.fm API
 ===============
 
